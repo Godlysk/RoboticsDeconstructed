@@ -37,8 +37,8 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute() {
 
-    double yaxis = RobotContainer.getY(RobotContainer.joy1, Constants.deadband); // Adjusted Y
-    double zaxis = RobotContainer.getZ(RobotContainer.joy1, Constants.deadband); // Adjusted Z
+    double yaxis = RobotContainer.getY(RobotContainer.joy1, Constants.deadband); 
+    double zaxis = RobotContainer.getZ(RobotContainer.joy1, Constants.deadband); 
 
     driveSubsystem.arcadeInbuilt(yaxis, zaxis);
     

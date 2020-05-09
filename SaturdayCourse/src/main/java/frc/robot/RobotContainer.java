@@ -68,26 +68,20 @@ public class RobotContainer {
   }
 
 
-  public static double getY(Joystick joy, final double band) {
-    // Inverted (Joystick moved forwards gives negtive reading)
-    double val = -joy.getY();
+  public static double getY(Joystick joy, double deadband) {
+    
+    double value = -1 * joy.getY();
+    if (Math.abs(value) < deadband) return 0;
+    return value;
 
-    if (Math.abs(val) < band)
-        val = 0;
-    else {
-        val = val - Math.signum(val) * band;
-    }
-    return val;
   }
 
-  public static double getZ(Joystick joy, double band) {
-    double val = joy.getZ();
+  public static double getZ(Joystick joy, double deadband) {
+    
+    double value = joy.getZ();
+    if (Math.abs(value) < deadband) return 0;
+    return value;
 
-    if (Math.abs(val) < band)
-        val = 0;
-    else {
-        val = val - Math.signum(val) * band;
-    }
-    return val;
   }
+  
 }
