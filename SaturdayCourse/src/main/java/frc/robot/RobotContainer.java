@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.BrakeCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.SpeedBoostCommand;
 import frc.robot.subsystems.DriveSubsystem;
 
 /**
@@ -53,6 +54,9 @@ public class RobotContainer {
 
     JoystickButton commandBrakeButton = new JoystickButton(joy1, Constants.brakeButtonNumber);
     commandBrakeButton.whenPressed(new BrakeCommand(driveSubsystem));
+
+    JoystickButton commandBoostButton = new JoystickButton(joy1, Constants.boostButtonNumber);
+    commandBoostButton.whenPressed(new SpeedBoostCommand());
 
   }
 

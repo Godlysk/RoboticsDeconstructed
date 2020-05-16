@@ -23,9 +23,9 @@ public final class Constants {
     public static final int BL_port = 4;
 
     public static final int brakeButtonNumber = 2;
+    public static final int boostButtonNumber = 3;
 
-    public static final double maxSpeed = 0.5;
-
+    public static double maxSpeed = 0.5;
 
     public static final double deadband = 0.05;
 
