@@ -8,20 +8,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class DriveCommand extends CommandBase {
-  
+public class MoveByDistanceCommand extends CommandBase {
+
   DriveSubsystem driveSubsystem;
-  
+  double setpoint, error;
+
   /**
-   * Creates a new DriveCommand.
+   * Creates a new MoveByDistanceCommand.
    */
-  public DriveCommand(DriveSubsystem driveSubsystem) {
+  public MoveByDistanceCommand(DriveSubsystem driveSubsystem, double setpoint) {
 
     this.driveSubsystem = driveSubsystem;
+    this.setpoint = setpoint;
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem);
   }
@@ -29,18 +31,18 @@ public class DriveCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    RobotContainer.enc_L.reset();
+    RobotContainer.enc_R.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    double yaxis = RobotContainer.getY(RobotContainer.joy1, Constants.deadband); 
-    double zaxis = RobotContainer.getZ(RobotContainer.joy1, Constants.deadband); 
+    this.error = this.setpoint - (driveSubsystem.getDistanceTravelled());
+    double correction = this.error * 0.1;
+    driveSubsystem.moveByDistance(correction);
 
-    driveSubsystem.arcadeInbuilt(yaxis, zaxis);
-    
   }
 
   // Called once the command ends or is interrupted.
@@ -51,7 +53,6 @@ public class DriveCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (Math.abs(this.error) <= (setpoint * 0.02));
   }
-  
 }

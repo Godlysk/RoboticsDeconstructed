@@ -121,8 +121,26 @@ public class DriveSubsystem extends SubsystemBase {
 
   }
 
-
   // https://www.kauailabs.com/dist/frc/2020/navx_frc.json
+
+  public double getDistanceTravelled() {
+    double leftDistance = RobotContainer.enc_L.getDistance();
+    double rightDistance = RobotContainer.enc_R.getDistance();
+    return ((leftDistance + rightDistance)/2);
+  }
+
+
+  public void moveByDistance(double correction) {
+    if (Math.abs(correction) < 0.05) correction = Math.signum(correction) * 0.05;
+    if (Math.abs(correction) > 0.5) correction = Math.signum(correction) * 0.5;
+    drive(correction, correction);
+  }
+
+  public void moveByAngle(double correction) {
+    if (Math.abs(correction) < 0.05) correction = Math.signum(correction) * 0.05;
+    if (Math.abs(correction) > 0.5) correction = Math.signum(correction) * 0.5;
+    drive(correction, -1 * correction);
+  }
 
 
 }

@@ -10,6 +10,7 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,8 +18,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.BrakeCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DrivePIDCommand;
+import frc.robot.commands.MoveByAngleCommand;
+import frc.robot.commands.MoveByDistanceCommand;
+import frc.robot.commands.SolenoidForwardCommand;
+import frc.robot.commands.SolenoidReverseCommand;
 import frc.robot.commands.SpeedBoostCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.SolenoidSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -32,10 +38,12 @@ public class RobotContainer {
 
   // Subsystems
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  private final SolenoidSubsystem solenoidSubsystem = new SolenoidSubsystem();
 
   // Commands
   private final DriveCommand driveCommand = new DriveCommand(driveSubsystem);
   private final DrivePIDCommand drivePIDCommand = new DrivePIDCommand(driveSubsystem);
+  private final SolenoidForwardCommand solenoidForwardCommand = new SolenoidForwardCommand(solenoidSubsystem);
 
   // IO Devices
   public static Joystick joy1 = new Joystick(1);
@@ -50,7 +58,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    // driveSubsystem.setDefaultCommand(driveCommand);
+    solenoidSubsystem.setDefaultCommand(solenoidForwardCommand);
     driveSubsystem.setDefaultCommand(drivePIDCommand);
   }
 
@@ -68,8 +76,11 @@ public class RobotContainer {
     JoystickButton commandBoostButton = new JoystickButton(joy1, Constants.boostButtonNumber);
     commandBoostButton.whenPressed(new SpeedBoostCommand());
 
-  }
+    JoystickButton commandSolenoidButton = new JoystickButton(joy1, Constants.solenoidButtonNumber);
+    commandSolenoidButton.toggleWhenPressed(new SolenoidReverseCommand(solenoidSubsystem));
 
+  }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -78,6 +89,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
+    // return new MoveByDistanceCommand(driveSubsystem, 5);
+    // return new MoveByAngleCommand(driveSubsystem, 30);
     return null;
   }
 
